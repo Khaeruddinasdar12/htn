@@ -58,15 +58,44 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
+                function (): string {
+                    $src = \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('rich-editor', 'filament/forms');
+                    $path = parse_url($src, PHP_URL_PATH) ?: '/js/filament/forms/components/rich-editor.js';
+                    $query = parse_url($src, PHP_URL_QUERY);
+                    $href = e($path.($query ? '?'.$query : ''));
+
+                    return <<<HTML
+                        <link rel="modulepreload" href="{$href}">
+                        <style>
+                            .fi-fo-rich-editor .fi-fo-rich-editor-content,
+                            .fi-fo-rich-editor .tiptap {
+                                min-height: inherit;
+                                height: 100%;
+                                cursor: text;
+                            }
+                        </style>
+                    HTML;
+                },
+            )
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_BEFORE,
                 fn (): string => <<<'HTML'
-                    <style>
-                        .fi-fo-rich-editor .fi-fo-rich-editor-content,
-                        .fi-fo-rich-editor .tiptap {
-                            min-height: inherit;
-                            height: 100%;
-                            cursor: text;
-                        }
-                    </style>
+                    <script>
+                        document.querySelectorAll('[x-load-src]').forEach((el) => {
+                            const src = el.getAttribute('x-load-src')
+                            if (!src) return
+
+                            try {
+                                const url = new URL(src, window.location.origin)
+                                el.setAttribute('x-load-src', url.pathname + url.search)
+                            } catch (e) {}
+
+                            const strategy = el.getAttribute('x-load')
+                            if (strategy === null || strategy === '' || strategy === 'true') {
+                                el.setAttribute('x-load', 'eager')
+                            }
+                        })
+                    </script>
                 HTML,
             );
     }

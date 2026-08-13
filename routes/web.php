@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\AnnouncementController;
 use App\Http\Controllers\Api\DosenController;
+use App\Http\Controllers\SpaController;
 
 // API Routes
 Route::prefix('api')->group(function () {
@@ -16,6 +17,4 @@ Route::prefix('api')->group(function () {
 });
 
 // SPA Route - semua route akan diarahkan ke app.blade.php
-Route::get('/{any}', function () {
-    return view('app');
-})->where('any', '.*');
+Route::get('/{any?}', [SpaController::class, 'index'])->where('any', '.*');
