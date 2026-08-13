@@ -43,25 +43,32 @@ class NewsForm
                     ->dehydrated(fn (?string $state): bool => filled($state)) // Pastikan data tersimpan meskipun disabled
                     ->columnSpan(1), // Slug mengambil 1 kolom
 
-                // Kolom File: File Upload untuk lampiran PDF
-                    FileUpload::make('image')
-                    ->label('Thumbnail')
-                    ->disk('public') // Ganti dengan disk yang Anda gunakan
-                    ->directory('news/files')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg']) 
-                    ->maxSize(10240) // Contoh batas ukuran 10MB
-                    ->columnSpanFull(), // Mengambil seluruh lebar formulir
-
-                // Kolom Konten: Menggunakan RichEditor untuk input teks panjang dan kaya
-                    RichEditor::make('content')
+                // Isi berita diletakkan di atas thumbnail agar overlay FilePond
+                // tidak menutupi area ketik TipTap.
+                RichEditor::make('content')
                     ->label('Isi Berita')
                     ->required()
-                    ->fileAttachmentsDisk('public') // Ganti dengan disk yang Anda gunakan
+                    ->placeholder('Tulis isi berita di sini...')
+                    ->fileAttachmentsDisk('public')
                     ->fileAttachmentsDirectory('news/attachments')
                     ->columnSpanFull()
+                    ->extraAttributes([
+                        'style' => 'position: relative; z-index: 1;',
+                    ])
                     ->extraInputAttributes([
-                        'style' => 'min-height: 400px'
-                    ]), // Mengambil seluruh lebar formulir (3 kolom)
+                        'style' => 'min-height: 400px;',
+                    ]),
+
+                FileUpload::make('image')
+                    ->label('Thumbnail')
+                    ->disk('public')
+                    ->directory('news/files')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
+                    ->maxSize(10240)
+                    ->extraAttributes([
+                        'style' => 'overflow: hidden; position: relative; z-index: 0;',
+                    ])
+                    ->columnSpanFull(),
 
                     DateTimePicker::make('created_at')
                     ->label('Waktu Dibuat')
