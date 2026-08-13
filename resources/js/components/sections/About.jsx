@@ -1,4 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+const PersonIcon = () => (
+  <svg
+    viewBox="0 0 96 96"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    style={{ width: '58%', height: '58%' }}
+  >
+    <circle cx="48" cy="34" r="16" fill="currentColor" />
+    <path
+      d="M16 84c0-17.673 14.327-32 32-32s32 14.327 32 32"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const KaprodiPhoto = () => {
+  const [hasPhoto, setHasPhoto] = useState(false);
+
+  return (
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+      <div style={{
+        position: 'absolute',
+        top: '-var(--space-md)',
+        left: '-var(--space-md)',
+        right: '-var(--space-md)',
+        bottom: '-var(--space-md)',
+        background: 'linear-gradient(135deg, var(--accent-600), var(--accent-500))',
+        borderRadius: 'var(--radius-2xl)',
+        opacity: 0.1,
+        filter: 'blur(20px)'
+      }}></div>
+      <img
+        src="kaprodi.jpeg"
+        alt="Ketua Program Studi"
+        onLoad={() => setHasPhoto(true)}
+        onError={() => setHasPhoto(false)}
+        style={{
+          position: 'relative',
+          display: hasPhoto ? 'block' : 'none',
+          borderRadius: 'var(--radius-xl)',
+          boxShadow: 'var(--shadow-lg)',
+          width: '100%',
+          height: 'auto'
+        }}
+      />
+      {!hasPhoto && (
+        <div
+          role="img"
+          aria-label="Ketua Program Studi"
+          style={{
+            position: 'relative',
+            width: 'min(280px, 100%)',
+            aspectRatio: '1',
+            borderRadius: '50%',
+            background: 'linear-gradient(180deg, var(--accent-100), var(--accent-200))',
+            color: 'var(--accent-600)',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            boxShadow: 'var(--shadow-lg)',
+            overflow: 'hidden'
+          }}
+        >
+          <PersonIcon />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const About = () => {
   return (
@@ -15,33 +86,10 @@ const About = () => {
           gap: 'var(--space-2xl)', 
           alignItems: 'center' 
         }}>
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute',
-              top: '-var(--space-md)',
-              left: '-var(--space-md)',
-              right: '-var(--space-md)',
-              bottom: '-var(--space-md)',
-              background: 'linear-gradient(135deg, var(--accent-600), var(--accent-500))',
-              borderRadius: 'var(--radius-2xl)',
-              opacity: 0.1,
-              filter: 'blur(20px)'
-            }}></div>
-            <img 
-              src="kaprodi.jpeg" 
-              alt="Ketua Program Studi" 
-              style={{
-                position: 'relative',
-                borderRadius: 'var(--radius-xl)',
-                boxShadow: 'var(--shadow-lg)',
-                width: '100%',
-                height: 'auto'
-              }}
-            />
-          </div>
+          <KaprodiPhoto />
           <div>
             <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: 'var(--space-md)', color: 'var(--gray-900)' }}>
-              DEWI ARNITA SARI, SH.,MH
+              Abdul Aziz, S.Pd.I., M.Si., Ph.D.
             </h3>
             <p style={{ color: 'var(--gray-600)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>
               Assalamualaikum Wr. Wb.
