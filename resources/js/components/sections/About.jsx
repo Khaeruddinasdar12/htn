@@ -89,7 +89,7 @@ const About = () => {
           <KaprodiPhoto />
           <div>
             <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: 'var(--space-md)', color: 'var(--gray-900)' }}>
-              Abdul Aziz, S.Pd.I., M.Si., Ph.D.
+              Abdul Aziz, Ph.D.
             </h3>
             <p style={{ color: 'var(--gray-600)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>
               Assalamualaikum Wr. Wb.
