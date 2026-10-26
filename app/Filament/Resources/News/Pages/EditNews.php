@@ -28,3 +28,4 @@ class EditNews extends EditRecord
 
         return $data;
     }
+}
