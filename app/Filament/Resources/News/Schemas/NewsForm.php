@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\News\Schemas;
 
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\DateTimePicker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class NewsForm
@@ -70,9 +72,21 @@ class NewsForm
                     ])
                     ->columnSpanFull(),
 
-                    DateTimePicker::make('created_at')
+                Select::make('user_id')
+                    ->label('Dibuat oleh')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->default(fn () => Auth::id())
+                    ->required()
+                    ->visible(fn (): bool => Auth::user()?->isAdmin() ?? false)
+                    ->dehydrated(fn (): bool => Auth::user()?->isAdmin() ?? false)
+                    ->helperText('Hanya admin yang dapat mengubah penulis berita.')
+                    ->columnSpanFull(),
+
+                DateTimePicker::make('created_at')
                     ->label('Waktu Dibuat')
-                    ->required() 
+                    ->required()
                     ->placeholder(now()->format('Y-m-d H:i:s')),
 
 

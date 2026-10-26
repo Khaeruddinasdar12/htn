@@ -6,10 +6,29 @@ const NewsDetailPage = () => {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
   
   useEffect(() => {
     fetchNews();
   }, [slug]);
+
+  useEffect(() => {
+    if (!showImageModal) return;
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowImageModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [showImageModal]);
   
   const fetchNews = async () => {
     try {
@@ -119,11 +138,13 @@ const NewsDetailPage = () => {
               <div style={{ 
                 borderRadius: 'var(--radius-xl)', 
                 overflow: 'hidden',
-                marginBottom: 'var(--space-2xl)'
+                marginBottom: 'var(--space-2xl)',
+                cursor: 'zoom-in'
               }}>
                 <img 
                   src={news.image || defaultImage} 
                   alt={news.title}
+                  onClick={() => setShowImageModal(true)}
                   style={{ 
                     width: '100%', 
                     height: '400px',
@@ -143,6 +164,69 @@ const NewsDetailPage = () => {
               }}
               dangerouslySetInnerHTML={{ __html: news.content }}
             />
+
+            {showImageModal && (
+              <div
+                onClick={() => setShowImageModal(false)}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 9999,
+                  padding: 'var(--space-lg)',
+                  cursor: 'pointer'
+                }}
+              >
+                <div
+                  onClick={(event) => event.stopPropagation()}
+                  style={{
+                    position: 'relative',
+                    maxWidth: '90vw',
+                    maxHeight: '90vh'
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setShowImageModal(false)}
+                    aria-label="Tutup foto"
+                    style={{
+                      position: 'absolute',
+                      top: '-48px',
+                      right: 0,
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontSize: '32px',
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      cursor: 'pointer',
+                      lineHeight: 1
+                    }}
+                  >
+                    &times;
+                  </button>
+                  <img
+                    src={news.image || defaultImage}
+                    alt={news.title}
+                    style={{
+                      maxWidth: '90vw',
+                      maxHeight: '90vh',
+                      objectFit: 'contain',
+                      borderRadius: 'var(--radius-lg)',
+                      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+                      cursor: 'default'
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
