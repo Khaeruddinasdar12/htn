@@ -20,31 +20,14 @@ const KaprodiPhoto = () => {
   const [hasPhoto, setHasPhoto] = useState(false);
 
   return (
-    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-      <div style={{
-        position: 'absolute',
-        top: '-var(--space-md)',
-        left: '-var(--space-md)',
-        right: '-var(--space-md)',
-        bottom: '-var(--space-md)',
-        background: 'linear-gradient(135deg, var(--accent-600), var(--accent-500))',
-        borderRadius: 'var(--radius-2xl)',
-        opacity: 0.1,
-        filter: 'blur(20px)'
-      }}></div>
+    <div className="kaprodi-photo-wrap">
       <img
-        src="kaprodi.jpeg"
-        alt="Ketua Program Studi"
+        src="/kaprodi.jpeg?v=4"
+        alt="Dr. Imron Rizki, S.H., M.H."
+        className="kaprodi-photo"
         onLoad={() => setHasPhoto(true)}
         onError={() => setHasPhoto(false)}
-        style={{
-          position: 'relative',
-          display: hasPhoto ? 'block' : 'none',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-lg)',
-          width: '100%',
-          height: 'auto'
-        }}
+        style={{ display: hasPhoto ? 'block' : 'none' }}
       />
       {!hasPhoto && (
         <div
@@ -61,7 +44,8 @@ const KaprodiPhoto = () => {
             alignItems: 'flex-end',
             justifyContent: 'center',
             boxShadow: 'var(--shadow-lg)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            margin: '0 auto'
           }}
         >
           <PersonIcon />
@@ -80,16 +64,11 @@ const About = () => {
           <p className="section-subtitle">Pesan dari pemimpin kami</p>
         </div>
         
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-          gap: 'var(--space-2xl)', 
-          alignItems: 'center' 
-        }}>
+        <div className="kaprodi-layout">
           <KaprodiPhoto />
           <div>
             <h3 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: 'var(--space-md)', color: 'var(--gray-900)' }}>
-              Abdul Aziz, Ph.D.
+              Dr. Imron Rizki, S.H., M.H.
             </h3>
             <p style={{ color: 'var(--gray-600)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>
               Assalamualaikum Wr. Wb.
